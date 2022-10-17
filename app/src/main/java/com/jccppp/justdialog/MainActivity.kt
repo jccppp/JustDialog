@@ -14,6 +14,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.hw).setOnClickListener {
             JustDialog(this, TestDialogBehavior("你好啊"),com.jccppp.dialog.R.style.Transparent_Dialog)
+                .addView(R.layout.dialog_test2)
+                .setWidth(1f)
+                .cancelOnTouchOutside(true)
                 .showBottom()
 //              .showGravity(gravity = Gravity.TOP)
 

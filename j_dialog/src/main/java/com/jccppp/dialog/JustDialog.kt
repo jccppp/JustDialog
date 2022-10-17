@@ -112,12 +112,12 @@ open class JustDialog : Dialog {
             layoutParams.height = height
             it.layoutParams = layoutParams
         }
-
-        window?.attributes?.let {
+        window?.setLayout(width, height)
+       /* window?.attributes?.let {
             it.width = width
             it.height = height
             window?.setAttributes(it)
-        }
+        }*/
 
     }
 
