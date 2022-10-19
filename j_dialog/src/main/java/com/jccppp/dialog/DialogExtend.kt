@@ -46,12 +46,25 @@ fun <VB : ViewBinding> JustDialog.bindView(
     return this
 }
 
+/*
+inline fun <reified VB : ViewBinding> JustDialog.binding() = lazy(LazyThreadSafetyMode.NONE) {
+    inflateBinding<VB>(layoutInflater).also { setContentView(it.root) }
+}
+
+inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
+    VB::class.java.getMethod("inflate", LayoutInflater::class.java)
+        .invoke(null, layoutInflater) as VB
+
+inline fun <reified VB : ViewBinding> bindBinding(view: View) =
+    VB::class.java.getMethod("bind", View::class.java).invoke(null, view) as VB
+*/
+
 //要先addView才可以onBindView    ViewBinding::bind
-fun <VB : ViewBinding> JustDialog.onBindView(
-    onBind: (View) -> VB,
+inline fun <reified VB : ViewBinding> JustDialog.onBindView(
     bind: (VB) -> Unit
 ): JustDialog {
-    bind.invoke(onBind(view.customView))
+    val v = VB::class.java.getMethod("bind", View::class.java).invoke(null, view.customView) as VB
+    bind.invoke(v)
     return this
 }
 
@@ -64,7 +77,7 @@ fun JustDialog.setClickDismiss(vararg clickId: Int): JustDialog {
     return this
 }
 
-fun <T : View> JustDialog.findView(clickId: Int): T? = this.view.findViewById(clickId)
+fun <T : View> JustDialog.findView(clickId: Int): T? = this.rootView.findViewById(clickId)
 
 inline fun JustDialog.setClick(
     clickId: Int,
@@ -96,6 +109,10 @@ fun JustDialog.setText(viewId: Int, context: String?): JustDialog {
 
 fun JustDialog.getCustomView(): View {
     return this.view
+}
+
+fun JustDialog.getRootView(): View {
+    return this.rootView
 }
 
 

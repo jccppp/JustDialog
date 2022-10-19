@@ -50,6 +50,8 @@ open class JustDialog : Dialog {
     /** The root layout of the dialog. */
     lateinit var view: JustDialogLayout
 
+    lateinit var rootView: ViewGroup
+
     open fun getOwner(): LifecycleOwner = _owner!!
 
     private fun init(any: Any, dialogBehavior: JustDialogBehavior) {
@@ -65,7 +67,7 @@ open class JustDialog : Dialog {
 
         val layoutInflater = LayoutInflater.from(context)
 
-        val rootView = dialogBehavior.createView(
+        rootView = dialogBehavior.createView(
             layoutInflater = layoutInflater
         )
         setContentView(rootView)
@@ -113,11 +115,11 @@ open class JustDialog : Dialog {
             it.layoutParams = layoutParams
         }
         window?.setLayout(width, height)
-       /* window?.attributes?.let {
-            it.width = width
-            it.height = height
-            window?.setAttributes(it)
-        }*/
+        /* window?.attributes?.let {
+             it.width = width
+             it.height = height
+             window?.setAttributes(it)
+         }*/
 
     }
 
@@ -166,6 +168,8 @@ open class JustDialog : Dialog {
     fun cancelable(cancelable: Boolean): JustDialog = apply {
         setCancelable(cancelable)
     }
+
+    fun getDialogBehavior() = dialogBehavior
 
     //关闭监听
     fun onDismissListener(listener: DialogInterface.OnDismissListener): JustDialog = apply {
